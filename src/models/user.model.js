@@ -49,3 +49,5 @@ const userSchema = new Schema(
 );
 
 export const user = mongoose.model("User", userSchema);
+
+//22mins
