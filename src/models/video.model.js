@@ -1,4 +1,7 @@
 import mongoose, { Schema } from "mongoose";
+import aggregatePaginate from "mongoose-aggregate-paginate/lib/mongoose-aggregate-paginate";
+// import bcrypt from "bcrypt";
+// import jsonwebtoken from "jsonwebtoken";
 
 const videoSchema = new Schema(
   {
@@ -34,5 +37,7 @@ const videoSchema = new Schema(
   },
   { timestamps: true }
 );
+
+videoSchema.plugin(aggregatePaginate);
 
 export const Video = mongoose.model("Video", videoSchema);
