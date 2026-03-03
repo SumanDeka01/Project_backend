@@ -1,7 +1,8 @@
-// require("dotenv").config({path: "./.env"});
+// require("dotenv").config({ path: "./.env" });
 import dotenv from "dotenv";
 import connectDB from "./db/index.js";
-import { connect } from "mongoose";
+// import { connect } from "mongoose";
+import app from "./app.js";
 
 dotenv.config({
   path: "./env",
@@ -9,19 +10,10 @@ dotenv.config({
 
 connectDB()
   .then(() => {
-    app.listen(process.env.PORT || 8000, () => {
+    app.listen(process.env.PORT, () => {
       console.log(`Server is running on port ${process.env.PORT}`);
     });
   })
   .catch((error) => {
-    console.log("error: Connecting the database", error);
+    console.log("Hmm Error Occured!", error);
   });
-
-// connectDB();
-// .then(() => {
-//   app.listen(process.env.PORT || 8000, () => {
-//     console.log(`Server is running on port ${process.env.PORT}`);
-//   });
-// }).catch((error) => {
-//   console.log("error: Connecting the database", error);
-// });
