@@ -8,11 +8,11 @@ router.route("/register").post(
   // This is the middleware
   upload.fields([
     {
-      name: avatar,
+      name: "avatar",
       maxcount: 1,
     },
     {
-      name: coverImage,
+      name: "coverImage",
       maxcount: 1,
     },
   ]),
