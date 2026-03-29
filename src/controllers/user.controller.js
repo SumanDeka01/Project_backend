@@ -73,7 +73,25 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "User created successfully"));
 });
 
-export { registerUser };
+const loginUser = asyncHandler( async(req, res) => {
+  //ToDo:
+  // Take username and emailid from frontend , params URL
+  // Validate the user
+  // And give access
+
+  const {email, username, password} = req.body
+
+  if(!username || !email) {
+    throw new ApiError(400, "Username or password required")
+  }
+
+  User.findOne({
+    $or: [{username}, {email}]
+  })
+
+})
+
+export { registerUser, loginUser };
 
 // To register a user
 // get the details from fronted
