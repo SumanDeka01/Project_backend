@@ -4,6 +4,13 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
+const generateAccessAndRefreshToken = async () => {
+  try {
+  } catch (error) {
+    throw new ApiError(400, "Failed");
+  }
+};
+
 const registerUser = asyncHandler(async (req, res) => {
   const { fullName, email, username, password } = req.body;
   // console.log("email:", email);
@@ -73,23 +80,33 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "User created successfully"));
 });
 
-const loginUser = asyncHandler( async(req, res) => {
+const loginUser = asyncHandler(async (req, res) => {
   //ToDo:
   // Take username and emailid from frontend , params URL
   // Validate the user
   // And give access
 
-  const {email, username, password} = req.body
+  const { email, username, password } = req.body;
 
-  if(!username || !email) {
-    throw new ApiError(400, "Username or password required")
+  if (!username || !email) {
+    throw new ApiError(400, "Username or password required");
   }
 
   User.findOne({
-    $or: [{username}, {email}]
-  })
+    $or: [{ username }, { email }],
+    //This will find both email and username
+  });
 
-})
+  if (!user) {
+    throw new ApiError(404, "User doesn't exists");
+  }
+
+  const isPasswordValid = await user.ispasswordCorrect(password);
+
+  if (!isPasswordValid) {
+    throw new ApiError(401, "Password Invalid");
+  }
+});
 
 export { registerUser, loginUser };
 
