@@ -4,10 +4,16 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-const generateAccessAndRefreshToken = async () => {
+const generateAccessAndRefreshTokens = async (userId) => {
   try {
+    const user = await User.findById(userId);
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    user.refreshToken = refreshToken; // This is save this in Db
+    await user.save({ validateBeforeSave: false });
   } catch (error) {
-    throw new ApiError(400, "Failed");
+    throw new ApiError(500, "Failed");
   }
 };
 
@@ -94,7 +100,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   User.findOne({
     $or: [{ username }, { email }],
-    //This will find both email and username
+    //This will find both email and username in the database
   });
 
   if (!user) {
@@ -106,11 +112,10 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!isPasswordValid) {
     throw new ApiError(401, "Password Invalid");
   }
+
+  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+    user._id
+  );
 });
 
 export { registerUser, loginUser };
-
-// To register a user
-// get the details from fronted
-// check if the user exists already
-// ch
