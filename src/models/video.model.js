@@ -35,9 +35,9 @@ const videoSchema = new Schema(
       type: Boolean,
     },
   },
-  { timestamps: true }
+  { timestamps: true } //Createdat & updatedat
 );
 
 videoSchema.plugin(aggregatePaginate);
 
-export const Video = mongoose.model("Video", videoSchema);
+export const Video = mongoose.model("Video", videoSchema); 

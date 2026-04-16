@@ -99,7 +99,7 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   User.findOne({
-    $or: [{ username }, { email }],
+    $or: [{ username }, { email }], 
     //This will find both email and username in the database
   });
 
