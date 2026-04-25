@@ -99,7 +99,7 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   User.findOne({
-    $or: [{ username }, { email }], 
+    $or: [{ username }, { email }],
     //This will find both email and username in the database
   });
 
@@ -116,6 +116,15 @@ const loginUser = asyncHandler(async (req, res) => {
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
     user._id
   );
+
+  const logedInUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
 });
 
 export { registerUser, loginUser };
