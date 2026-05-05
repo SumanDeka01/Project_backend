@@ -20,7 +20,6 @@ const generateAccessAndRefreshTokens = async (userId) => {
 const registerUser = asyncHandler(async (req, res) => {
   const { fullName, email, username, password } = req.body;
   // console.log("email:", email);
-
   // if(fullName ==="") {
   //     throw new ApiError(400, "fullname is required")
   // } This can be done, but have to do this for all the models here!
@@ -125,6 +124,24 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
   };
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+      new ApiResponse(
+        200,
+        {
+          user: logedInUser,
+          accessToken,
+          refreshToken,
+        },
+        "User logged in successfully"
+      )
+    );
+
+  const logoutUser = asyncHandler(async (req, res) => {});
 });
 
 export { registerUser, loginUser };
